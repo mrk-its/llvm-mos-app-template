@@ -1,0 +1,4 @@
+{
+  "image": "mrkits/llvm-mos-sdk:latest",
+  "extensions": ["ms-vscode.cpptools-extension-pack"]
+}

@@ -1,0 +1,2 @@
+llvm-objdump $1 --syms  | awk -F '\t' 'BEGIN{print "mads 2.0.8\nLabel table:"} /^[0-9a-f]{8}.*\.(text|bss)/{print "00\t" substr($1,5,4) "\t" substr($2, 10)}'
+# awk -F'\t' '{print "00\t" substr($1,5,4) "\t" substr($2, 10)}'
