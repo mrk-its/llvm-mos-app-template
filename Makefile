@@ -1,7 +1,5 @@
-TARGET = a800xl
-EXT = xex
 CLANG = mos-$(TARGET)-clang
-CFLAGS = -O2 -DTARGET=$(TARGET)
+CFLAGS = -O2 -Dmos_$(TARGET)
 ELF = -Wl,--oformat=elf
 
 SRCS = $(wildcard *.c)
@@ -17,7 +15,7 @@ sim:
 %.$(EXT): ../../%.c
 	$(CLANG) $< -o $(basename $@).elf $(CFLAGS) $(ELF)
 	../../tools/labels.sh $(basename $@).elf > $(basename $@).lab
-	llvm-objdump -d $(basename $@).elf > $(basename $@).asm
+	llvm-objdump -d $(basename $@).elf --print-imm-hex > $(basename $@).asm
 	$(CLANG) $< -o $@ $(CFLAGS)
 
 clean:
