@@ -1,23 +1,20 @@
 CLANG = mos-$(TARGET)-clang
-CFLAGS = -O2 -Dmos_$(TARGET)
-ELF = -Wl,--oformat=elf
+CFLAGS = -O3 -Dmos_$(TARGET)
 
 SRCS = $(wildcard *.c)
 
-a800xl:
+atari8:
 	mkdir -p target/$@
-	make -C target/$@ -f ../../Makefile TARGET=a800xl EXT=xex $(SRCS:.c=.xex)
+	make -C target/$@ -f ../../Makefile TARGET=atari8 EXT=xex $(SRCS:.c=.xex)
 
 sim:
 	mkdir -p target/$@
 	make -C target/$@ -f ../../Makefile TARGET=sim EXT=sim $(SRCS:.c=.sim)
 
 %.$(EXT): ../../%.c
-	$(CLANG) $< -o $(basename $@).elf $(CFLAGS) $(ELF)
-	../../tools/labels.sh $(basename $@).elf > $(basename $@).lab
-	llvm-objdump -d $(basename $@).elf --print-imm-hex > $(basename $@).asm
 	$(CLANG) $< -o $@ $(CFLAGS)
+	../../tools/labels.sh $@.elf > $(basename $@).lab
+	llvm-objdump -d $@.elf --print-imm-hex > $(basename $@).asm
 
 clean:
 	rm -fr target
-
